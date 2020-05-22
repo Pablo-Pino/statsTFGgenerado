@@ -1,0 +1,28 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}Ejercicio mock{% endblock %}
+
+{% block head %}
+
+<script>
+    $(document).ready(function(){
+        inicia_sesionactividad('{{ identificador }}');
+        $("#boton_resuelve_mock").click(async function() {
+            finaliza_sesionactividad('{{ identificador }}');
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block body %}
+
+    <div id="alert-div">
+
+    </div>
+
+    <div>
+        <button id="boton_resuelve_mock">Pulsa  para resolver el ejercicio</button>
+    </div>
+
+{% endblock %}

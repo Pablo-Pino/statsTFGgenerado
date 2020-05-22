@@ -1,0 +1,35 @@
+{{ field.label_tag }}
+{% if was_validated %}
+    {% if field.errors %}
+        <select name="{{ field.name }}" class="form-control is-invalid" id="id_{{ field.name }}" multiple="">
+            {% for option in field %}
+                {{ option }}
+            {% endfor %}
+        </select>
+    {% else %}
+        <select name="{{ field.name }}" class="form-control is-valid" id="id_{{ field.name }}" multiple="">
+            {% for option in field %}
+                {{ option }}
+            {% endfor %}
+        </select>
+    {% endif %}
+    {% for error in field.errors %}
+        <div class="invalid-feedback" id="id_{{ field.name }}_error">
+            {{ error }}
+        </div>
+    {% endfor %}
+{% else %}
+    {% if field.value == None %}
+        <select name="{{ field.name }}" class="form-control" id="id_{{ field.name }}" multiple="">
+            {% for option in field %}
+                {{ option }}
+            {% endfor %}
+        </select>
+    {% else %}
+        <select name="{{ field.name }}" class="form-control" id="id_{{ field.name }}" multiple="">
+            {% for option in field %}
+                {{ option }}
+            {% endfor %}
+        </select>
+    {% endif %}
+{% endif %}

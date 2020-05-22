@@ -1,0 +1,26 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+
+    {% if form.errors %}
+
+        <div class="alert alert-danger" role="alert">
+            No se ha encontrado un usuario con las credenciales introducidas
+        </div>
+
+    {% endif %}
+
+    <div>
+
+        <form action="/login/" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Login" />
+            <input type="hidden" name="next" value="/">
+        </form>
+
+    </div>
+
+{% endblock %}

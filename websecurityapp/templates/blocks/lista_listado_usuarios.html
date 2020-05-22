@@ -1,0 +1,27 @@
+<div id="id_div_listado_usuarios">
+
+    {% include 'blocks/pagination.html' with page_obj=page_obj_usuarios %}
+
+    <table class="table" id="id_table_usuarios">
+        <tr>
+            <th>Nombre de usuario</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+        </tr>
+        {% for obj_usuario in page_obj_usuarios %}
+            {% if not obj_usuario.vetado %}
+                <tr>
+                    <td>{{ obj_usuario.django_user.username }}</td>
+                    <td>{{ obj_usuario.django_user.first_name }}</td>
+                    <td>{{ obj_usuario.django_user.last_name }}</td>
+                    <td>{{ obj_usuario.django_user.email }}</td>
+                    <td>
+                        <button onclick="window.location.href = '/perfil/detalles_ajeno/{{ obj_usuario.id }}/'">Perfil del usuario</button>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+
+</div>

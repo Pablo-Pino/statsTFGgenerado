@@ -1,0 +1,74 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}{{ titulo_pagina }}{% endblock %}
+
+{% block body %}
+        
+    <div id="id_div_listado_ofertas">
+
+    {% include 'blocks/pagination.html' with page_obj=page_obj_ofertas page_param='page' %}
+
+        <table class="table">
+            <tr>
+                <th>Titulo</th>  
+                <th>Descripcion</th>
+                <th>Fecha de creacion</th>
+                <th>Autor</th>
+            </tr>
+            {% for oferta in page_obj_ofertas %}
+                {% if oferta.cerrada or oferta.vetada or oferta in ofertas_actividades_vetadas %}
+                    <tr style='background-color:rgba(255, 0, 0, 0.4)'>
+                {% elif oferta in ofertas_solicitables %}
+                    <tr style='background-color:rgba(0, 255, 0, 0.4)'>
+                {% else %}
+                    <tr>
+                {% endif %}
+                    <td>{{ oferta.titulo }}</td>
+                    <td>{{ oferta.descripcion }}</td>
+                    <td>{{ oferta.fecha_creacion | date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>{{ oferta.autor.django_user.first_name }} {{ oferta.autor.django_user.last_name }}</td>
+                    <td>
+                        <button id="button_detalles_{{ oferta.id }}" onclick="window.location.href = '/oferta/detalles/{{ oferta.id }}/'">Detalles de la oferta</button>
+                    </td>
+                    {% if not oferta.cerrada %}
+                        {% if oferta.borrador and oferta.autor == usuario %}
+                            <td>
+                                <button id="button_editar_{{ oferta.id }}" onclick="window.location.href = '/oferta/edicion/{{ oferta.id }}/'">Editar oferta</button>
+                            </td>
+                            <td>
+                                <button id="button_eliminar_{{ oferta.id }}" onclick="alerta_redireccion('Desea eliminar esta oferta ?', '/oferta/eliminacion/{{ oferta.id }}/')">Eliminar oferta</button>
+                            </td>
+                        {% endif %}
+                        {% if oferta.autor == usuario and not oferta.borrador and not oferta.vetada %}
+                            <td>
+                                <button id="button_cerrar_{{ oferta.id }}" onclick="alerta_redireccion('Desea cerrar esta oferta ?', '/oferta/cierre/{{ oferta.id }}/')">Cerrar oferta</button>
+                            </td>
+                        {% endif %}
+                        {% if usuario.es_admin and not oferta.vetada and not oferta.borrador %}
+                            <td>
+                                <button id="button_vetar_{{ oferta.id }}" onclick="window.location.href = '/oferta/veto/{{ oferta.id }}/'">Vetar oferta</button>
+                            </td>
+                        {% elif usuario.es_admin and oferta.vetada and not oferta.borrador %}
+                            <td>
+                                <button id="button_levantar_veto_{{ oferta.id }}" onclick="alerta_redireccion('Desea levantar el veto sobre est oferta ?', '/oferta/levantamiento_veto/{{ oferta.id }}/')">Levantar el veto sobre la oferta</button>
+                            </td>
+                        {% endif %}
+                        {% if not oferta.borrador and not oferta.vetada %}
+                            {% if oferta in ofertas_retirables %}
+                                <td>
+                                    <button id="button_retirar_solicitud_oferta_{{ oferta.id }}" onclick="window.location.href = '/oferta/retiro_solicitud/{{ oferta.id }}/'">Retirar la solicitud de la oferta</button>
+                                </td>
+                            {% elif oferta in ofertas_solicitables %}
+                                <td>
+                                    <button id="button_solicitar_oferta_{{ oferta.id }}" onclick="window.location.href = '/oferta/solicitud/{{ oferta.id }}/'">Solicitar la oferta</button>
+                                </td>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+{% endblock %}

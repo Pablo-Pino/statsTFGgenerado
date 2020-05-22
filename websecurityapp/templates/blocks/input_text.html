@@ -1,0 +1,19 @@
+{{ field.label_tag }}
+{% if was_validated %}
+    {% if field.errors %}
+        <input type="{{ type }}" class="form-control is-invalid" value="{{ field.value }}" id="{{ id }}" name="{{ field.name }}" />
+    {% else %}
+        <input type="{{ type }}" class="form-control is-valid" value="{{ field.value }}" id="{{ id }}" name="{{ field.name }}" />
+    {% endif %} 
+    {% for error in field.errors %}
+        <div class="invalid-feedback" id="{{id}}_error">
+            {{ error }}
+        </div>
+    {% endfor %}
+{% else %}
+    {% if field.value == None %}
+        <input type="{{ type }}" class="form-control" id="{{ id }}" name="{{ field.name }}" />
+    {% else %}
+        <input type="{{ type }}" class="form-control" value="{{ field.value }}" id="{{ id }}" name="{{ field.name }}" />
+    {% endif %}    
+{% endif %}

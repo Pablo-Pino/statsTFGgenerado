@@ -1,0 +1,28 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}Edicion de perfil{% endblock %}
+
+{% block body %}
+
+    <div>
+
+        <form method="post" action="/perfil/edicion/">
+            {% csrf_token %}
+            {# Include the hidden fields #}
+            {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+            {% endfor %}
+            {# Include the visible fields #}
+            {% include 'blocks/input_text.html' with type='text' field=form.nombre_usuario was_validated=validated id='id_nombre_usuario' %}
+            {% include 'blocks/input_text.html' with type='password' field=form.contrasenna was_validated=validated id='id_contrasenna' %}
+            {% include 'blocks/input_text.html' with type='text' field=form.nombre was_validated=validated id='id_nombre' %}
+            {% include 'blocks/input_text.html' with type='text' field=form.apellidos was_validated=validated id='id_apellidos' %}
+            {% include 'blocks/input_text.html' with type='text' field=form.email was_validated=validated id='id_email' %}
+            {% include 'blocks/input_text.html' with type='text' field=form.telefono was_validated=validated id='id_telefono' %}
+            {% include 'blocks/input_text.html' with type='text' field=form.empresa_u_equipo was_validated=validated id='id_empresa_u_equipo' %}
+            <input type="submit" value="Editar mi perfil" />
+        </form>
+
+    </div>
+
+{% endblock %}

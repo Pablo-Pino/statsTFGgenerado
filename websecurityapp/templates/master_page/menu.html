@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg">
+    <!--div class="container-fluid"-->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">WebSecurity</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav mr-auto">
+                {% if not user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Anonimo
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/login/">Login</a>
+                            <a class="dropdown-item" href="/usuario/registro/">Registro</a>
+                            <!-- div class="dropdown-divider"></div -->
+                        </div>
+                    </li>
+                {% elif user.is_authenticated %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/logout/" role="button" aria-haspopup="true" aria-expanded="false">
+                            Logout
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Actividades
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/actividad/listado/">Listado de actividades</a>
+                            <a class="dropdown-item" href="/actividad/creacion/">Creacion de actividades</a>
+                            <a class="dropdown-item" href="/actividad/listado_propio/">Mis actividades</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Ofertas y solicitudes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/oferta/listado/">Listado de ofertas</a>
+                            <a class="dropdown-item" href="/oferta/creacion/">Creacion de ofertas</a>
+                            <a class="dropdown-item" href="/oferta/listado_propio/">Mis ofertas</a>
+                            <a class="dropdown-item" href="/oferta/listado_solicitud_propio/">Mis solicitudes</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Perfil
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/perfil/detalles/">Mi perfil</a>
+                            <a class="dropdown-item" href="/perfil/edicion/">Editar mi perfil</a>
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    <!--/div-->
+</nav>

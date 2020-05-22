@@ -1,0 +1,34 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}
+    
+    {% if anexo_id %}
+        Edición de anexo
+    {% else %}
+        Creación de anexo
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+    <div>
+
+        {% if anexo_id %}
+            <form method="post" action="/anexo/creacion_edicion/{{anexo_id}}/">
+        {% else %}
+            <form method="post" action="/anexo/creacion_edicion/">
+        {% endif %}
+            {% csrf_token %}
+            {# Include the hidden fields #}
+            {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+            {% endfor %}
+            {# Include the visible fields #}
+            {% include 'blocks/input_text.html' with type='text' field=form.anexo was_validated=validated id='id_anexo' %}
+            <input type="submit" value="Editar el anexo" />
+        </form>
+
+    </div>
+
+{% endblock %}

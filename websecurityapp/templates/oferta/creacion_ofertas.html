@@ -1,0 +1,19 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}Creacion de ofertas{% endblock %}
+
+{% block body %}
+
+    <div>
+
+        <form method="post" action="/oferta/creacion/">
+            {% csrf_token %}
+            {% include 'blocks/input_text.html' with type='text' field=form.titulo was_validated=validated id='id_titulo' %}
+            {% include 'blocks/input_text.html' with type='textarea' field=form.descripcion was_validated=validated id='id_descripcion' %}
+            {% include 'blocks/input_multipleselect.html' with field=form.actividades was_validated=validated %}
+            <input type="submit" value="Editar la oferta" />
+        </form>
+
+    </div>
+
+{% endblock %}

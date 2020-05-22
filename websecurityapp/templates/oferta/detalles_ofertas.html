@@ -1,0 +1,83 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}Detalles de ofertas{% endblock %}
+
+{% block body %}
+
+    <div>
+
+        <h3>Identificador : {{ oferta.identificador }}</h3>
+
+        {% if oferta.cerrada %}
+            <h4 style="color:red;">CERRADA</h4>
+        {% endif %}
+
+        {% if oferta.vetada %}
+            <h4 style="color:red;">VETADA</h4>
+        {% endif %}
+
+        <p>Titulo : {{ oferta.titulo }}</p>
+        <p>Descripcion : {{ oferta.descripcion }}</p>
+        <p>Fecha de creacion : {{ oferta.fecha_creacion }}</p>
+        <p>Autor : {{ oferta.autor.django_user.first_name }} {{ oferta.autor.django_user.last_name }}</p>
+        <button id="button_detalles_autor" onclick="window.location.href = '/perfil/detalles/{{ oferta.autor.id }}/'"
+            >Detalles del autor</button>
+        {% if oferta.vetada %}
+            <p>Motivo de veto : {{ oferta.motivo_veto }}</p>
+        {% endif %}
+
+        <br>
+
+        <fieldset id="fieldset_actividades"><legend>Actividades</legend>
+            {% include 'blocks/lista_listado_actividades.html' with actividades=page_obj_actividades actividades_realizadas=actividades_realizadas usuario=usuario page_param='page_actividades' mostrar_actividades_vetadas=True %}
+        </fieldset>
+
+        {% if usuario == oferta.autor and not oferta.borrador %}
+            <div>
+                {#% if page_obj_usuarios %#}
+                    <fieldset id="fieldset_solicitantes"><legend>Solicitantes</legend>
+                        {% include 'blocks/lista_listado_usuarios.html' with page_obj_usuarios=page_obj_usuarios usuario=usuario page_param='page_solicitantes' %}
+                    </fieldset>
+                {#% endif %#}
+            </div>
+        {% endif %}
+
+    </div>
+
+    {% if oferta.borrador and oferta.autor == usuario and not oferta.vetada and not oferta.cerrada %}
+        <td>
+            <button id="button_editar" onclick="window.location.href = '/oferta/edicion/{{ oferta.id }}/'">Editar oferta</button>
+        </td>
+        <td>
+            <button id="button_eliminar" onclick="alerta_redireccion('Desea eliminar esta oferta ?', '/oferta/eliminacion/{{ oferta.id }}/')">Eliminar oferta</button>
+        </td>
+    {% endif %}
+    {% if oferta.autor == usuario and not oferta.borrador and not oferta.vetada and not oferta.cerrada %}
+        <td>
+            <button id="button_cerrar" onclick="alerta_redireccion('Desea cerrar esta oferta ?', '/oferta/cierre/{{ oferta.id }}/')">Cerrar oferta</button>
+        </td>
+    {% endif %}
+    {% if not oferta.borrador and usuario.es_admin and not oferta.cerrada %}
+        {% if oferta.vetada %}
+            <td>
+                <button id="button_levantar_veto" onclick="alerta_redireccion('Desea levantar el veto sobre esta oferta ?', '/oferta/levantamiento_veto/{{ oferta.id }}/')">Levantar el veto sobre la oferta</button>
+            </td>
+        {% else %}
+            <td>
+                <button id="button_vetar" onclick="window.location.href = '/oferta/veto/{{ oferta.id }}/'">Vetar oferta</button>
+            </td>
+        {% endif %}
+    {% endif %}
+    {% if not oferta.borrador and not oferta.vetada and not oferta.cerrada %}
+        {% if retirable %}
+            <td>
+                <button id="button_retirar_solicitud" onclick="window.location.href = '/oferta/retiro_solicitud/{{ oferta.id }}/'">Retirar la solicitud de la oferta</button>
+            </td>
+        {% elif solicitable %}
+            <td>
+                <button id="button_solicitar" onclick="window.location.href = '/oferta/solicitud/{{ oferta.id }}/'">Solicitar la oferta</button>
+            </td>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

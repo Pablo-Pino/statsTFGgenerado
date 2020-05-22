@@ -1,0 +1,40 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}Perfil de {{ usuario_perfil.django_user.username }}{% endblock %}
+
+{% block body %}
+
+    <div id='id_body_detalles_perfil'>
+
+        <p>Nombre : {{ usuario_perfil.django_user.first_name }}</p>
+        <p>Apellidos : {{ usuario_perfil.django_user.last_name }}</p>
+        <p>Email : {{ usuario_perfil.django_user.email }}</p>
+        <p>Telefono : {{ usuario_perfil.telefono }}</p>
+        <p>Empresa/equipo : {{ usuario_perfil.empresa_u_equipo }}</p>
+
+        <fieldset id='id_fieldset_anexos'><legend>Anexos</legend>
+            <ul>
+                {% for anexo in anexos %}
+                    <li>
+                        <a href="{{ anexo.anexo }}">{{ anexo.anexo }}</a>
+                        {% if usuario == usuario_perfil %}
+                            <br>
+                            <button id="id_boton_edicion_anexo_{{anexo.id}}" onclick="window.location.href = '/anexo/creacion_edicion/{{ anexo.id }}/'">Editar anexo</button>
+                            <button id="id_boton_eliminacion_anexo_{{anexo.id}}" onclick="window.location.href = '/anexo/eliminacion/{{ anexo.id }}/'">Eliminar anexo</button>
+                        {% endif %}
+                    </li>
+                    <br>
+                {% endfor %}
+            </ul>
+            {% if usuario == usuario_perfil %}
+                <button id="id_boton_creacion_anexo" onclick="window.location.href = '/anexo/creacion_edicion/'">Crear nuevo anexo</button>
+            {% endif %}
+        </fieldset>
+
+        <fieldset id='id_fieldset_actividades'><legend>Listado de actividades resueltas por {{ usuario_perfil.django_user.username}}</legend>
+            {% include 'blocks/lista_listado_actividades.html' with page_obj_actividades=page_obj_actividades_realizadas usuario=usuario page_param='page' mostrar_actividades_vetadas=True %}
+        </fieldset>
+
+    </div>
+
+{% endblock %}

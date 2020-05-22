@@ -1,0 +1,27 @@
+{{ field.label_tag }}
+{% if was_validated %}
+    {% if field.errors %}
+        {% if field.value %}
+            <input type="checkbox" class="form-control is-invalid" value="{{ field.value }}" id="{{ id }}" name="{{ field.name }}" checked />
+        {% else %}
+            <input type="checkbox" class="form-control is-invalid" value="{{ field.value }}" id="{{ id }}" name="{{ field.name }}" />
+        {% endif %}
+    {% else %}
+        {% if field.value %}
+            <input type="checkbox" class="form-control is-valid" value="{{ field.value }}" id="{{ id }}" name="{{ field.name }}" checked />
+        {% else %}
+            <input type="checkbox" class="form-control is-valid" value="{{ field.value }}" id="{{ id }}" name="{{ field.name }}" />
+        {% endif %}
+    {% endif %}
+    {% for error in field.errors %}
+        <div class="invalid-feedback" id="{{ id }}_error">
+            {{ error }}
+        </div>
+    {% endfor %}
+{% else %}
+    {% if field.value %}
+        <input type="checkbox" class="form-control" value="{{ field.value }}" id="{{ id }}" name="{{ field.name }}" checked />
+    {% else %}
+        <input type="checkbox" class="form-control" value="{{ field.value }}" id="{{ id }}" name="{{ field.name }}" />
+    {% endif %}
+{% endif %}

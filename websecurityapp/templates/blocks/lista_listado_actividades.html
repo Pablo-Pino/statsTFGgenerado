@@ -1,0 +1,53 @@
+<div id="id_div_listado_actividades">
+
+    {% include 'blocks/pagination.html' with page_obj=page_obj_actividades %}
+
+    <table class="table" id="id_table_actividades">
+        <tr>
+            <th>Titulo</th>
+            <th>Descripcion</th>
+            <th>Fecha de creacion</th>
+            <th>Autor</th>
+        </tr>
+        {% for a in page_obj_actividades %}
+            {% if not a.autor == usuario and a.borrador %}
+            {% elif a.borrador and not a.autor == usuario %}
+            {% elif a.vetada and not a.autor == usuario and not usuario.es_admin and not mostrar_actividades_vetadas %}
+            {% else %}
+                {% if a.vetada %}
+                    <tr style="background-color:rgba(255, 0, 0, 0.4);">
+                {% elif a in actividades_realizadas %}
+                    <tr style="background-color:rgba(0, 255, 0, 0.4);">
+                {% else %}
+                    <tr>
+                {% endif %}
+                        <td>{{ a.titulo }}</td>
+                        <td>{{ a.descripcion }}</td>
+                        <td>{{ a.fecha_creacion | date:"SHORT_DATE_FORMAT" }}</td>
+                        <td>{{ a.autor.django_user.first_name }} {{ a.autor.django_user.last_name }}</td>
+                        <td>
+                            <button id="button_detalles_{{ a.id }}" onclick="window.location.href = '/actividad/detalles/{{ a.id }}/'">Detalles de la actividad</button>
+                        </td>
+                        {% if a.borrador and a.autor == usuario %}
+                            <td>
+                                <button id="button_editar_{{ a.id }}" onclick="window.location.href = '/actividad/edicion/{{ a.id }}/'">Editar actividad</button>
+                            </td>
+                            <td>
+                                <button id="button_eliminar_{{ a.id }}" onclick="alerta_redireccion('Desea eliminar esta actividad ?', '/actividad/eliminacion/{{ a.id }}/')">Eliminar actividad</button>
+                            </td>
+                        {% endif %}
+                        {% if usuario.es_admin and not a.vetada %}
+                            <td>
+                                <button id="button_vetar_{{ a.id }}" onclick="window.location.href = '/actividad/veto/{{ a.id }}/'">Vetar actividad</button>
+                            </td>
+                        {% elif usuario.es_admin and a.vetada %}
+                            <td>
+                                <button id="button_levantar_veto_{{ a.id }}" onclick="alerta_redireccion('Desea levantar el veto sobre est actividad ?', '/actividad/levantamiento_veto/{{ a.id }}/')">Levantar el veto sobre la actividad</button>
+                            </td>
+                        {% endif %}
+                    </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+
+</div>

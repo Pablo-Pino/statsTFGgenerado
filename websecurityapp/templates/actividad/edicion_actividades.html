@@ -1,0 +1,26 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}Edicion de actividades{% endblock %}
+
+{% block body %}
+
+    <div>
+
+        <form method="post" action="/actividad/edicion/{{actividad_id}}/">
+            {% csrf_token %}
+            {# Include the hidden fields #}
+            {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+            {% endfor %}
+            {# Include the visible fields #}
+            {% include 'blocks/input_text.html' with type='text' field=form.titulo was_validated=validated id='id_titulo' %}
+            {% include 'blocks/input_text.html' with type='text' field=form.enlace was_validated=validated id='id_enlace' %}
+            {% include 'blocks/input_text.html' with type='textarea' field=form.descripcion was_validated=validated id='id_descripcion' %}
+            {% include 'blocks/input_checkbox.html' with field=form.comentable was_validated=validated id='id_comentable' %}
+            {% include 'blocks/input_checkbox.html' with field=form.borrador was_validated=validated id='id_borrador' %}
+            <input type="submit" value="Editar la actividad" />
+        </form>
+
+    </div>
+
+{% endblock %}

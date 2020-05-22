@@ -1,0 +1,24 @@
+<div id="id_pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a id="id_{{page_param}}_primera" href="?{{page_param}}=1">&laquo; Primera</a>
+            <a id="id_{{page_param}}_anterior" href="?{{page_param}}={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a id="id_{{page_param}}_siguiente" href="?{{page_param}}={{ page_obj.next_page_number }}">Siguiente</a>
+            <a id="id_{{page_param}}_ultima" href="?{{page_param}}={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+        {% endif %}
+
+        <button id="button_{{page_param}}" onclick="
+            n_pagina = document.getElementById('input_page_range').value;
+            selecciona_pagina(n_pagina, '{{page_param}}')";
+        >Accede a página</button> :
+        <input id="input_page_range" type="number" min="1" max="{{ page_obj.paginator.num_pages }}">
+
+    </span>
+</div>

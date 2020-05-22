@@ -1,0 +1,9 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}{{ titulo_pagina }}{% endblock %}
+
+{% block body %}
+
+    {% include 'blocks/lista_listado_actividades.html' with page_obj_actividades=page_obj_actividades actividades_realizadas=actividades_realizadas usuario=usuario page_param='page' mostrar_actividades_vetadas=False%}
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "master_page/master_page.html" %}
+
+{% block title %}Registro de usuario{% endblock %}
+
+{% block body %}   
+
+    {% if registro_exito %}
+
+        <div class="alert alert-success" role="alert">
+            Usuario registrado con exito
+        </div>
+
+    {% elif registro_exito == False %}
+
+        <div class="alert alert-danger" role="alert">
+            No se ha podido registrar al usuario
+        </div>
+
+    {% endif %}
+
+    <div>
+
+        <form action="/usuario/registro/" method="post">
+            {% csrf_token %}
+            {{ usuario_form.as_p }}
+            <input type="submit" value="Registrar el usuario" />
+        </form>
+
+    </div>
+
+{% endblock %}
